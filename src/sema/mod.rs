@@ -287,10 +287,9 @@ fn resolve_import(
                 if !ns.files.iter().any(|f| f.path == file.full_path) {
                     sema_file(&file, resolver, ns);
 
-                    // give up if we failed
-                    if ns.diagnostics.any_errors() {
-                        return;
-                    }
+                    // @ferranbt. We do not stop if the diagnostics contain errors, as we want to
+                    // continue resolving the rest of the imports. Otherwise, even if the imported Contracts
+                    // do not have any errors, they are not available in the symbol table.
                 }
 
                 ns.files
