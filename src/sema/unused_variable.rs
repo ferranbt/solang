@@ -444,13 +444,16 @@ fn emit_warning_contract_variables(variable: &ast::Variable) -> Option<Diagnosti
             variable.loc,
             format!(
                 "storage variable '{}' has been assigned, but never read",
-                variable.name
+                variable.id.name
             ),
         ));
     } else if !variable.assigned && !variable.read {
         return Some(Diagnostic::warning(
             variable.loc,
-            format!("storage variable '{}' has never been used", variable.name),
+            format!(
+                "storage variable '{}' has never been used",
+                variable.id.name
+            ),
         ));
     }
 
@@ -475,7 +478,7 @@ pub fn check_unused_namespace_variables(ns: &mut Namespace) {
         if !constant.read {
             ns.diagnostics.push(Diagnostic::warning(
                 constant.loc,
-                format!("global constant '{}' has never been used", constant.name),
+                format!("global constant '{}' has never been used", constant.id.name),
             ));
         }
     }

@@ -361,7 +361,10 @@ fn resolve_variable_contract() {
     );
     contract.variables.push(Variable {
         tags: vec![],
-        name: "var1".to_string(),
+        id: pt::Identifier {
+            name: "var1".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Bool,
         visibility: Visibility::Public(None),
@@ -374,7 +377,10 @@ fn resolve_variable_contract() {
     });
     contract.variables.push(Variable {
         tags: vec![],
-        name: "var2".to_string(),
+        id: pt::Identifier {
+            name: "var2".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Int(128),
         visibility: Visibility::Public(None),
@@ -388,7 +394,10 @@ fn resolve_variable_contract() {
 
     contract.variables.push(Variable {
         tags: vec![],
-        name: "imut".to_string(),
+        id: pt::Identifier {
+            name: "imut".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Int(128),
         visibility: Visibility::Public(None),
@@ -404,7 +413,10 @@ fn resolve_variable_contract() {
 
     ns.constants.push(Variable {
         tags: vec![],
-        name: "var3".to_string(),
+        id: pt::Identifier {
+            name: "var3".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Uint(32),
         visibility: Visibility::Public(None),
@@ -916,7 +928,10 @@ fn test_member_access() {
     );
     contract.variables.push(Variable {
         tags: vec![],
-        name: "var1".to_string(),
+        id: pt::Identifier {
+            name: "var1".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Bool,
         visibility: Visibility::Public(None),
@@ -1039,7 +1054,10 @@ fn test_check_types() {
     );
     contract.variables.push(Variable {
         tags: vec![],
-        name: "var1".to_string(),
+        id: pt::Identifier {
+            name: "var1".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Bool,
         visibility: Visibility::Public(None),

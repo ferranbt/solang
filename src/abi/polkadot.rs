@@ -306,7 +306,7 @@ pub fn gen_project<'a>(contract_no: usize, ns: &'a ast::Namespace) -> InkProject
                     type_to_storage_layout(ty, layout_key, &registry),
                     ty.into(),
                 );
-                Some(FieldLayout::new(var.name.clone(), root))
+                Some(FieldLayout::new(var.id.name.clone(), root))
             } else {
                 None
             }

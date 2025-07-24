@@ -891,7 +891,7 @@ pub(super) fn incr_decr(
                 *loc,
                 format!(
                     "cannot assign to constant '{}'",
-                    ns.contracts[*contract_no].variables[*var_no].name
+                    ns.contracts[*contract_no].variables[*var_no].id.name
                 ),
             ));
             Err(())
@@ -904,7 +904,10 @@ pub(super) fn incr_decr(
         } => {
             diagnostics.push(Diagnostic::error(
                 *loc,
-                format!("cannot assign to constant '{}'", ns.constants[*var_no].name),
+                format!(
+                    "cannot assign to constant '{}'",
+                    ns.constants[*var_no].id.name
+                ),
             ));
             Err(())
         }

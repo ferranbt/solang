@@ -120,7 +120,10 @@ fn contract_constant_variable() {
 
     let var = Variable {
         tags: vec![],
-        name: "const_var".to_string(),
+        id: pt::Identifier {
+            name: "const_var".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Uint(64),
         visibility: Visibility::Public(None),
@@ -186,7 +189,10 @@ fn global_constant_variable() {
 
     let var = Variable {
         tags: vec![],
-        name: "const_var".to_string(),
+        id: pt::Identifier {
+            name: "const_var".to_string(),
+            loc: pt::Loc::Codegen,
+        },
         loc,
         ty: Type::Uint(64),
         visibility: Visibility::Public(None),

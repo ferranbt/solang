@@ -2049,11 +2049,11 @@ impl Dot {
                 1,
                 format!(
                     "{}.{}",
-                    ns.contracts[*contract].id, ns.contracts[*contract].variables[var_no].name
+                    ns.contracts[*contract].id, ns.contracts[*contract].variables[var_no].id.name
                 ),
             );
         } else {
-            labels.insert(1, ns.constants[var_no].name.to_string());
+            labels.insert(1, ns.constants[var_no].id.name.to_string());
         }
 
         self.add_node(
@@ -2077,7 +2077,7 @@ impl Dot {
             String::from("storage variable"),
             format!(
                 "{}.{}",
-                ns.contracts[contract].id, ns.contracts[contract].variables[var_no].name
+                ns.contracts[contract].id, ns.contracts[contract].variables[var_no].id.name
             ),
             ty.to_string(ns),
             ns.loc_to_string(PathDisplay::FullPath, loc),
@@ -2642,7 +2642,7 @@ impl Namespace {
 
             for var in &c.variables {
                 let mut labels = vec![
-                    format!("variable {}", var.name),
+                    format!("variable {}", var.id.name),
                     format!("visibility {}", var.visibility),
                     var.ty.to_string(self),
                     self.loc_to_string(PathDisplay::FullPath, &var.loc),

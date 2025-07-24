@@ -417,7 +417,7 @@ pub fn variable_decl<'a>(
     );
 
     let sdecl = Variable {
-        name: def.name.as_ref().unwrap().name.to_string(),
+        id: def.name.as_ref().unwrap().clone(),
         loc: def.loc,
         tags,
         visibility: visibility.clone(),

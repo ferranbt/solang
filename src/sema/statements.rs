@@ -1657,7 +1657,7 @@ fn destructure(
                             *loc,
                             format!(
                                 "cannot assign to constant '{}'",
-                                ns.contracts[*contract_no].variables[*var_no].name
+                                ns.contracts[*contract_no].variables[*var_no].id.name
                             ),
                         ));
                         return Err(());
@@ -1669,7 +1669,10 @@ fn destructure(
                     } => {
                         diagnostics.push(Diagnostic::error(
                             *loc,
-                            format!("cannot assign to constant '{}'", ns.constants[*var_no].name),
+                            format!(
+                                "cannot assign to constant '{}'",
+                                ns.constants[*var_no].id.name
+                            ),
                         ));
                         return Err(());
                     }
@@ -1687,7 +1690,7 @@ fn destructure(
                                 *loc,
                                 format!(
                                     "cannot assign to immutable '{}' outside of constructor",
-                                    store_var.name
+                                    store_var.id.name
                                 ),
                             ));
                             return Err(());

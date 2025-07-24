@@ -529,7 +529,7 @@ fn contract_constant(
             .variables
             .iter_mut()
             .enumerate()
-            .find(|(_, variable)| variable.name == id.name)
+            .find(|(_, variable)| variable.id.name == id.name)
         {
             if !var.constant {
                 let resolve_function = if let ResolveTo::Type(ty) = resolve_to {
@@ -550,7 +550,7 @@ fn contract_constant(
                         format!(
                             "need instance of contract '{}' to get variable value '{}'",
                             ns.contracts[contract_no].id,
-                            ns.contracts[contract_no].variables[var_no].name,
+                            ns.contracts[contract_no].variables[var_no].id.name,
                         ),
                     ));
                     return Err(());
@@ -832,7 +832,7 @@ fn type_name_expr(
                                 if v.immutable {
                                     Some(Note {
                                         loc: v.loc,
-                                        message: format!("immutable variable {}", v.name),
+                                        message: format!("immutable variable {}", v.id.name),
                                     })
                                 } else {
                                     None

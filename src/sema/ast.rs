@@ -581,7 +581,7 @@ impl fmt::Display for UserTypeDecl {
 #[derive(Debug)]
 pub struct Variable {
     pub tags: Vec<Tag>,
-    pub name: String,
+    pub id: pt::Identifier,
     pub loc: pt::Loc,
     pub ty: Type,
     pub visibility: pt::Visibility,

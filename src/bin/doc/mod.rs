@@ -265,7 +265,7 @@ pub fn generate_docs(outdir: &OsString, files: &[ast::Namespace], verbose: bool)
                 var: &'a ast::Variable,
             ) -> Variable<'a> {
                 Variable {
-                    name: &var.name,
+                    name: &var.id.name,
                     ty: var.ty.to_string(file),
                     base_contract,
                     title: get_tag("title", &var.tags),
