@@ -655,3 +655,28 @@ fn get_import_path() {
         assert_eq!(Some(&(None, examples.clone())), import_path);
     }
 }
+
+#[test]
+fn no_spdx_license() {
+    let src = r#"contract creator {
+    function create_child_with_meta(address child) public {
+        Child.new();
+        Child.say_hello();
+    }
+}
+    "#;
+    let mut cache = FileResolver::default();
+    cache.set_file_contents("test.sol", src.to_string());
+
+    let ns = parse_and_resolve(OsStr::new("test.sol"), &mut cache, Target::EVM);
+
+    let warnings = ns.diagnostics.warnings();
+    assert_eq!(warnings.len(), 1);
+
+    let src = "// SPDX-License-Identifier: Apache-2.0\n".to_string() + src;
+    cache.set_file_contents("test.sol", src);
+
+    let ns = parse_and_resolve(OsStr::new("test.sol"), &mut cache, Target::EVM);
+    let warnings = ns.diagnostics.warnings();
+    assert_eq!(warnings.len(), 0);
+}

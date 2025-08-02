@@ -114,6 +114,14 @@ fn sema_file(file: &ResolvedFile, resolver: &mut FileResolver, ns: &mut ast::Nam
         }
     };
 
+    // check whether the file has a SPDX license
+    if !includes_spdx_license(&comments) {
+        ns.diagnostics.push(ast::Diagnostic::warning(
+            pt::Loc::File(0, 0, 0),
+            "missing SPDX license".to_string(),
+        ));
+    }
+
     let tree = collect_annotations_doccomments(&pt, &comments, ns);
 
     // first resolve all the types we can find
@@ -531,6 +539,16 @@ fn collect_annotations_doccomments<'a>(
     }
 
     SourceUnit { items, contracts }
+}
+
+fn includes_spdx_license(comments: &[pt::Comment]) -> bool {
+    comments.iter().any(|c| {
+        if let pt::Comment::Line(pos, text) = c {
+            pos.start() == 0 && text.starts_with("// SPDX-License-Identifier:")
+        } else {
+            false
+        }
+    })
 }
 
 /// If an item does not allow annotations, then generate diagnostic errors for any annotions
