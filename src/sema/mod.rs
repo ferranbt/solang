@@ -117,7 +117,7 @@ fn sema_file(file: &ResolvedFile, resolver: &mut FileResolver, ns: &mut ast::Nam
     // check whether the file has a SPDX license
     if !includes_spdx_license(&comments) {
         ns.diagnostics.push(ast::Diagnostic::warning(
-            pt::Loc::File(0, 0, 0),
+            pt::Loc::File(file_no, 0, 0),
             "missing SPDX license".to_string(),
         ));
     }
