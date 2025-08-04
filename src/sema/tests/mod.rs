@@ -680,3 +680,19 @@ fn no_spdx_license() {
     let warnings = ns.diagnostics.warnings();
     assert_eq!(warnings.len(), 0);
 }
+
+#[test]
+fn test_persistent_is_enabled_on_evm() {
+    // TODO: How to make this parameterized?
+    let src = r#"contract creator {
+    function some_function() public returns (bool persistent){
+        return true;
+    }
+}
+    "#;
+    let mut cache = FileResolver::default();
+    cache.set_file_contents("test.sol", src.to_string());
+
+    let ns = parse_and_resolve(OsStr::new("test.sol"), &mut cache, Target::EVM);
+    println!("{:#?}", ns.diagnostics);
+}
