@@ -69,6 +69,7 @@ pub(super) fn member_access(
 
     // is it an error selector
     if let Some(expr) = error_selector(loc, e, id, context.file_no, context.contract_no, ns)? {
+        used_variable(ns, &expr, symtable);
         return Ok(expr);
     }
 
@@ -82,6 +83,7 @@ pub(super) fn member_access(
         ns,
         diagnostics,
     )? {
+        used_variable(ns, &expr, symtable);
         return Ok(expr);
     }
 
@@ -736,7 +738,7 @@ fn error_selector(
                 ty: Type::Bytes(4),
             }))
         } else {
-            Err(())
+            Ok(None)
         }
     } else {
         Ok(None)

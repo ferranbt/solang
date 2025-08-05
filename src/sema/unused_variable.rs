@@ -128,6 +128,13 @@ pub fn used_variable(ns: &mut Namespace, exp: &Expression, symtable: &mut Symtab
             ns.constants[*var_no].read = true;
         }
 
+        Expression::ErrorSelector { error_no, .. } => {
+            ns.errors[*error_no].used = true;
+        }
+        Expression::EventSelector { event_no, .. } => {
+            ns.events[*event_no].used = true;
+        }
+
         Expression::StructMember { expr, .. } => {
             used_variable(ns, expr, symtable);
         }
