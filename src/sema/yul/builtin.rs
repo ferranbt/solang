@@ -108,6 +108,8 @@ pub enum YulBuiltInFunction {
     Difficulty = 74,
     GasLimit = 75,
     PrevRandao = 76,
+    TLoad = 77,
+    TStore = 78,
 }
 
 // These are functions that do high level stuff in a contract and are not yet implemented.
@@ -199,6 +201,8 @@ static BUILTIN_YUL_FUNCTIONS: phf::Map<&'static str, YulBuiltInFunction> = phf_m
     "difficulty" => YulBuiltInFunction::Difficulty,
     "gaslimit" => YulBuiltInFunction::GasLimit,
     "prevrandao" => YulBuiltInFunction::PrevRandao,
+    "tload" => YulBuiltInFunction::TLoad,
+    "tstore" => YulBuiltInFunction::TStore,
 };
 
 /// Retrieved the builtin function type from an identifier name
@@ -269,7 +273,7 @@ impl fmt::Display for YulBuiltInFunction {
 
 // Yul built-in functions.
 // Descriptions copied and slightly modified from: https://docs.soliditylang.org/en/v0.8.12/yul.html
-static YUL_BUILTIN: [YulBuiltinPrototype; 77] =
+static YUL_BUILTIN: [YulBuiltinPrototype; 79] =
     [
         YulBuiltinPrototype {
             name: "stop",
@@ -961,6 +965,24 @@ static YUL_BUILTIN: [YulBuiltinPrototype; 77] =
             no_returns: 1,
             doc: "Random number provided by the beacon chain",
             ty: YulBuiltInFunction::PrevRandao,
+            stops_execution: false,
+            availability: [true, false, false],
+        },
+        YulBuiltinPrototype {
+            name: "tload",
+            no_args: 1,
+            no_returns: 1,
+            doc: "tload(p) returns storage[p], i.e. memory on contract's storage",
+            ty: YulBuiltInFunction::TLoad,
+            stops_execution: false,
+            availability: [true, false, false],
+        },
+        YulBuiltinPrototype {
+            name: "tstore",
+            no_args: 2,
+            no_returns: 0,
+            doc: "tstore(p) stores v into storage[p]",
+            ty: YulBuiltInFunction::TStore,
             stops_execution: false,
             availability: [true, false, false],
         },
