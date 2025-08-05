@@ -41,6 +41,12 @@ pub(crate) fn used_variable(ns: &mut Namespace, exp: &YulExpression, symtable: &
             used_variable(ns, member, symtable);
         }
 
+        YulExpression::ConstantVariable(_, _, con, var_no) => {
+            if let Some(contract_no) = con {
+                ns.contracts[*contract_no].variables[*var_no].read = true;
+            }
+        }
+
         _ => (),
     }
 }

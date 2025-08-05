@@ -712,7 +712,7 @@ fn test_error_codes_selector() {
             
         }   
     }
-    "#;
+        "#;
 
     let mut cache = FileResolver::default();
     cache.set_file_contents("test.sol", src.to_string());
@@ -721,4 +721,26 @@ fn test_error_codes_selector() {
 
     let diagnostics = ns.diagnostics;
     println!("warnings {diagnostics:#?}");
+}
+
+#[test]
+fn test_assembly_with_internal_variable() {
+    let src = r#"// SPDX-License-Identifier: Apache-2.0
+    contract test {
+        uint256 internal constant MIN_AGE = 18;
+
+        function validateAge(uint256 age) internal pure returns (bool valid) {
+            assembly {
+                valid := iszero(lt(age, MIN_AGE))
+            }
+        }
+    }
+    "#;
+
+    let mut cache = FileResolver::default();
+    cache.set_file_contents("test.sol", src.to_string());
+
+    let ns = parse_and_resolve(OsStr::new("test.sol"), &mut cache, Target::EVM);
+    let diagnostics = ns.diagnostics;
+    assert_eq!(diagnostics.warnings().len(), 0);
 }
