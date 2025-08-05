@@ -696,3 +696,29 @@ fn test_persistent_is_enabled_on_evm() {
     let ns = parse_and_resolve(OsStr::new("test.sol"), &mut cache, Target::EVM);
     println!("{:#?}", ns.diagnostics);
 }
+
+#[test]
+fn test_error_codes_selector() {
+    let src = r#"
+    contract test {
+        error InvalidObj();
+
+        event Transfer(address indexed from, address indexed to, uint256 value);
+
+        error InsufficientBalance(uint256 required);
+        
+        function test_error_code() public {
+            bytes32 ev = Transfer.selector;
+            bytes4 fn = test_error_code.selector;
+            bytes4 err = InsufficientBalance.selector;
+        }   
+    }
+    "#;
+
+    let mut cache = FileResolver::default();
+    cache.set_file_contents("test.sol", src.to_string());
+
+    let ns = parse_and_resolve(OsStr::new("test.sol"), &mut cache, Target::EVM);
+    let errors = ns.diagnostics.errors();
+    assert_eq!(errors.len(), 0);
+}

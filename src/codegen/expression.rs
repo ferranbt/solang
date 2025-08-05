@@ -598,6 +598,7 @@ pub fn expression(
                 func_expr.external_function_selector()
             }
         },
+        ast::Expression::ErrorSelector { .. } => unimplemented!("not implemented yet"),
         ast::Expression::EventSelector { loc, ty, event_no } => {
             let emitter = new_event_emitter(loc, *event_no, &[], ns);
 

@@ -61,6 +61,7 @@ impl RetrieveType for Expression {
             | Expression::ExternalFunction { ty, .. }
             | Expression::NamedMember { ty, .. }
             | Expression::StorageArrayLength { ty, .. }
+            | Expression::ErrorSelector { ty, .. }
             | Expression::EventSelector { ty, .. } => ty.clone(),
             Expression::ExternalFunctionCallRaw { .. } => {
                 panic!("two return values");

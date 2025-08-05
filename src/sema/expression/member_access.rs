@@ -67,6 +67,11 @@ pub(super) fn member_access(
         return Ok(expr);
     }
 
+    // is it an error selector
+    if let Some(expr) = error_selector(loc, e, id, context.file_no, context.contract_no, ns)? {
+        return Ok(expr);
+    }
+
     // is it an event selector
     if let Some(expr) = event_selector(
         loc,
@@ -701,6 +706,36 @@ fn event_selector(
                 "multiple definitions of event".into(),
                 notes,
             ));
+            Err(())
+        }
+    } else {
+        Ok(None)
+    }
+}
+
+fn error_selector(
+    loc: &pt::Loc,
+    expr: &pt::Expression,
+    id: &pt::Identifier,
+    file_no: usize,
+    contract_no: Option<usize>,
+    ns: &mut Namespace,
+) -> Result<Option<Expression>, ()> {
+    if id.name != "selector" {
+        return Ok(None);
+    }
+
+    // Convert expression to identifier path for resolve_error
+    if let Some(path) = ns.expr_to_identifier_path(expr) {
+        if let Ok(error_no) =
+            ns.resolve_error(file_no, contract_no, &path, &mut Diagnostics::default())
+        {
+            Ok(Some(Expression::ErrorSelector {
+                loc: *loc,
+                error_no,
+                ty: Type::Bytes(4),
+            }))
+        } else {
             Err(())
         }
     } else {

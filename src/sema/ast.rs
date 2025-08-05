@@ -1262,6 +1262,11 @@ pub enum Expression {
         ty: Type,
         event_no: usize,
     },
+    ErrorSelector {
+        loc: pt::Loc,
+        error_no: usize,
+        ty: Type,
+    },
     TypeOperator {
         loc: pt::Loc,
         ty: Type,
@@ -1513,6 +1518,7 @@ impl Recurse for Expression {
                 | Expression::RationalNumberLiteral { .. }
                 | Expression::BytesLiteral { .. }
                 | Expression::BoolLiteral { .. }
+                | Expression::ErrorSelector { .. }
                 | Expression::EventSelector { .. }
                 | Expression::TypeOperator { .. } => (),
             }
@@ -1586,6 +1592,7 @@ impl CodeLocation for Expression {
             | Expression::And { loc, .. }
             | Expression::NamedMember { loc, .. }
             | Expression::UserDefinedOperator { loc, .. }
+            | Expression::ErrorSelector { loc, .. }
             | Expression::EventSelector { loc, .. }
             | Expression::TypeOperator { loc, .. } => *loc,
         }
