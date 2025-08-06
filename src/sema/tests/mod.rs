@@ -744,3 +744,49 @@ fn test_assembly_with_internal_variable() {
     let diagnostics = ns.diagnostics;
     assert_eq!(diagnostics.warnings().len(), 0);
 }
+
+#[test]
+fn test_library_with_external_struct() {
+    let lib = r#"// SPDX-License-Identifier: Apache-2.0
+    contract A {
+        struct B {
+            uint256 x;
+            uint256 y;
+        }
+
+        uint256 public constant VAR = 1;
+
+        function example() public pure returns (uint256) {
+            return 1;
+        }
+    }
+
+    library C {
+        struct C1 {
+            uint256 a;
+            uint256 b;
+        }
+    }
+    "#;
+
+    let src = r#"// SPDX-License-Identifier: Apache-2.0
+    import {A, C} from "./lib.sol";
+
+    contract test {
+        function example() internal returns (uint256) {
+            A.B memory b = A.B({x: 1, y: 2});
+            C.C1 memory c1 = C.C1({a: 3, b: 4});
+            return A.VAR;
+        }
+    }
+    "#;
+
+    let mut cache = FileResolver::default();
+    cache.set_file_contents("lib.sol", lib.to_string());
+    cache.set_file_contents("test.sol", src.to_string());
+
+    let ns = parse_and_resolve(OsStr::new("test.sol"), &mut cache, Target::EVM);
+    let diagnostics = ns.diagnostics;
+    let errors = diagnostics.errors();
+    assert_eq!(errors.len(), 0, "Errors found: {:#?}", errors);
+}

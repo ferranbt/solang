@@ -1404,6 +1404,18 @@ impl Namespace {
             });
 
         if let Some(contract_no) = contract_no {
+            // check if the symbol is defined in the contract
+            if s.is_none() {
+                let file_no = self.contracts[contract_no].loc.file_no();
+
+                if let Some(sym) =
+                    self.variable_symbols
+                        .get(&(file_no, Some(contract_no), id.name.to_owned()))
+                {
+                    s = Some(sym);
+                }
+            }
+
             // check bases contracts
             if s.is_none() {
                 if let Some(sym) = self.resolve_var_base_contract(contract_no, id) {
